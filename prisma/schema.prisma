@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Lead {
+  id            String   @id @default(cuid())
+  name          String
+  phone         String
+  email         String?
+  serviceType   String
+  city          String
+  state         String
+  pincode       String
+  status        String   @default("NEW")
+  source        String   @default("DIRECT")
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Employee {
+  id            String   @id @default(cuid())
+  name          String
+  role          String
+  email         String   @unique
+  phone         String
+  status        String   @default("ACTIVE")
+  createdAt     DateTime @default(now())
+}
+
+model Worker {
+  id           String    @id @default(cuid())
+  name         String
+  phone        String    @unique
+  serviceType  String
+  city         String
+  pincode      String
+  isVerified   Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+}
+
+model LegalConfig {
+  id            String   @id @default(cuid())
+  jurisdiction  String
+  skillLevel    String
+  minWage       Decimal  @db.Decimal(24, 8)
+  version       Int      @default(1)
+}
